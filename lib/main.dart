@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_guess/image_card.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -44,6 +43,27 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
   String currentVehicleName = '';
 
+  double scrollPercent = 0.0;
+
+  List<Widget> buildCards() {
+    List<Widget> cardsList = [];
+    for (int i = 0; i < vehicleNames.length; i++) {
+      cardsList.add(buildCard(i, scrollPercent));
+    }
+    return cardsList;
+  }
+
+  Widget buildCard(int cardIndex, double scrollPercent) {
+    final cardScrollPercent = scrollPercent / (1 / vehicleNames.length);
+    return FractionalTranslation(
+      translation: Offset(cardIndex - cardScrollPercent, 0.0),
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: ImageCard(imageName: vehicleNames[cardIndex]),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,12 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
-              child: ImageCard(
-                imageName: vehicleNames[0],
+            Stack(
+                children: buildCards(),
               ),
-            ),
             OutlineButton(
               padding: EdgeInsets.all(10.0),
               onPressed: () => {},

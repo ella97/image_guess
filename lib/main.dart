@@ -28,7 +28,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String currentVehicleName = 'vehicle name';
+  List<String> vehicleNames = [
+    'bicycle',
+    'boat',
+    'car',
+    'excavator',
+    'helicopter',
+    'motobike',
+    'plane',
+    'tractor',
+    'train',
+    'truck'
+  ];
+  String currentVehicleName = '';
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +54,10 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
-              child: Container(
+              child: Image.asset(
+                'assets/images/${vehicleNames[0]}.jpeg',
                 height: 300,
-                color: Colors.blue,
+                fit: BoxFit.fitHeight,
               ),
             ),
             OutlineButton(
@@ -68,13 +81,14 @@ class _MyHomePageState extends State<MyHomePage> {
               highlightedBorderColor: Colors.black,
             ),
             Text(
-             'vehicle name',
+              'vehicle name',
               style: TextStyle(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
                 color: Colors.blue,
                 letterSpacing: 2,
-              ),),
+              ),
+            ),
           ],
         ),
       ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_guess/image_card.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -34,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
     'car',
     'excavator',
     'helicopter',
-    'motobike',
+    'motorbike',
     'plane',
     'tractor',
     'train',
@@ -54,10 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
-              child: Image.asset(
-                'assets/images/${vehicleNames[0]}.jpeg',
-                height: 300,
-                fit: BoxFit.fitHeight,
+              child: ImageCard(
+                imageName: vehicleNames[0],
               ),
             ),
             OutlineButton(

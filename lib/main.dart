@@ -44,6 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
   String currentVehicleName = '';
 
   double scrollPercent = 0.0;
+  Offset startDrag;
+  double startDragPercentScroll;
+  double finishScrollStart;
+  double finishScrollEnd;
 
   List<Widget> buildCards() {
     List<Widget> cardsList = [];
@@ -64,6 +68,34 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  onHorizontalDragStart(DragStartDetails details) {
+    startDrag = details.globalPosition;
+    startDragPercentScroll = scrollPercent;
+  }
+
+  onHorizontalDragUpdate(DragUpdateDetails details) {
+    final currentDrag = details.globalPosition;
+    final dragDistance = currentDrag.dx - startDrag.dx;
+    final singleCardDragPercent = dragDistance / context.size.width;
+
+    setState(() {
+      scrollPercent = (startDragPercentScroll +
+              (-singleCardDragPercent / vehicleNames.length))
+          .clamp(0.0, 1.0 - (1 / vehicleNames.length));
+    });
+  }
+
+  onHorizontalDragEnd(DragEndDetails details) {
+    finishScrollStart = scrollPercent;
+    finishScrollEnd =
+        (scrollPercent * vehicleNames.length).round() / vehicleNames.length;
+    setState(() {
+      startDrag = null;
+      startDragPercentScroll = null;
+      currentVehicleName = '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,9 +106,15 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Stack(
+            GestureDetector(
+              onHorizontalDragStart: onHorizontalDragStart,
+              onHorizontalDragUpdate: onHorizontalDragUpdate,
+              onHorizontalDragEnd: onHorizontalDragEnd,
+              behavior: HitTestBehavior.translucent,
+              child: Stack(
                 children: buildCards(),
               ),
+            ),
             OutlineButton(
               padding: EdgeInsets.all(10.0),
               onPressed: () => {},
